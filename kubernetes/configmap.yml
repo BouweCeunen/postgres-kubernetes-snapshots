@@ -6,3 +6,4 @@ metadata:
 data:
     DB_HOST: <db_host>
     DB_PORT: "5432"
+    AWS_BUCKET: <aws_bucket>
