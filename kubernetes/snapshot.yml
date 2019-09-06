@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app: postgres-snapshot
+  name: postgres-snapshot
+  namespace: application
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    metadata:
+      labels:
+        app: postgres-snapshot
+    spec:
+      template:
+        metadata:
+          labels:
+            app: postgres-snapshot
+        spec:
+          containers:
+          - name:  postgres-snapshot
+            image: bouwe/postgres-snapshot:0.0.1
+            command: ["bash","snapshot"]
+            envFrom:
+            - secretRef:
+                name: snapshot-secret
+            - configMapRef:
+                name: snapshot-configmap
+            resources:
+              limits:
+                cpu: 100m
+                memory: 100Mi
+              requests:
+                cpu: 50m
+                memory: 50Mi
+          restartPolicy: Never

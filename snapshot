@@ -1,0 +1,15 @@
+#!/bin/bash
+
+res=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U stolon -p $DB_PORT -d postgres -c "SELECT datname FROM pg_database WHERE datname NOT IN ('template0', 'template1', 'postgres')" | tail -n +3)
+count=$(($(echo "$res" | wc -l) -1))
+res=$(echo "$res" | head -n $count)
+
+while read -r database; do
+    FILENAME=$database-$(date +%Y-%m-%d_%H:%M:%S).sql
+    PGPASSWORD=$DB_PASSWORD pg_dump -h $DB_HOST -U stolon -p $DB_PORT -d $database -f $FILENAME
+    if [ $? -eq 0 ]; then
+        aws s3 cp $FILENAME $AWS_BUCKET
+    else
+        echo "Something went wrong with getting database dump "$database
+    fi
+done <<< "$res"

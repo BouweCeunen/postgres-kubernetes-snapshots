@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: snapshot-configmap
+  namespace: application
+data:
+    DB_HOST: <db_host>
+    DB_PORT: "5432"
