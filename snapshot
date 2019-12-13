@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -o pipefail
+
 res=$(PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U stolon -p $DB_PORT -d postgres -c "SELECT datname FROM pg_database WHERE datname NOT IN ('template0', 'template1', 'postgres')" | tail -n +3)
 count=$(($(echo "$res" | wc -l) -1))
 res=$(echo "$res" | head -n $count)
