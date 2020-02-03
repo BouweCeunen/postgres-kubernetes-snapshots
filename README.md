@@ -1,4 +1,4 @@
-# postgres-kubernetes-snapshots
+# Postgres Kubernetes Snapshots
 Take snapshots of your Postgres cluster in Kubernetes.
 
 Feel free to read about this with some more details on [Medium](https://medium.com/axons/essential-kubernetes-tools-94503209d1cb).
